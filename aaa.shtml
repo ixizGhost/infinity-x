@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hacked by Infinity Sec</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://files.catbox.moe/7r4ia4.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: monospace;
+      color: red;
+      text-align: center;
+    }
+
+    .marquee {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      background: black;
+      color: red;
+      font-size: 24px;
+      font-family: monospace;
+      white-space: nowrap;
+      box-sizing: border-box;
+      padding: 10px 0;
+    }
+
+    .marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 12s linear infinite;
+    }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.7);
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 15px;
+      width: 80%;
+    }
+
+    h1 {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 30px;
+      margin-top: 0;
+      color: white;
+    }
+
+    p {
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    .glow {
+      text-shadow: 0 0 10px darkred, 0 0 20px red, 0 0 30px crimson;
+    }
+
+    audio {
+      margin-top: 20px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="marquee">
+    <span>Infinity Sec Team • Infinity Sec Team • Infinity Sec Team • Infinity Sec Team • </span>
+  </div>
+
+  <div class="container">
+    <h1 class="glow">HACKED BY Infinity Sec</h1>
+    <h2>We Are Legion</h2>
+    <p>idiots!</p>
+    <audio controls autoplay loop>
+      <source src="https://files.catbox.moe/9y6cfz.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <footer>
+    © 2025 - Stay Safe | Ethical Hack Only
+  </footer>
+</body>
+</html>
