@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InfinityFlix Lokal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #111;
+      color: #fff;
+    }
+    header {
+      background: #1f1f1f;
+      padding: 1rem;
+      text-align: center;
+      font-size: 2rem;
+      color: #00ff99;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .movie-card {
+      background: #1a1a1a;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #00ff9955;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .movie-card:hover {
+      transform: scale(1.03);
+    }
+    .movie-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .movie-title {
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal video {
+      width: 90%;
+      max-width: 800px;
+      border-radius: 10px;
+    }
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🎬 InfinityFlix Lokal</header>
+
+  <div class="container" id="movieList">
+    <!-- Film akan dimuat oleh JS -->
+  </div>
+
+  <!-- Modal Player -->
+  <div class="modal" id="videoModal">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <video id="videoPlayer" controls></video>
+  </div>
+
+  <script>
+    const movies = [
+      {
+        title: "The Matrix",
+        thumb: "thumbs/matrix.jpg",
+        file: "videos/matrix.mp4"
+      },
+      {
+        title: "Avengers: Endgame",
+        thumb: "thumbs/avengers.jpg",
+        file: "videos/avengers.mp4"
+      },
+      {
+        title: "Interstellar",
+        thumb: "thumbs/interstellar.jpg",
+        file: "videos/interstellar.mp4"
+      }
+    ];
+
+    const container = document.getElementById("movieList");
+    const modal = document.getElementById("videoModal");
+    const player = document.getElementById("videoPlayer");
+
+    // Tampilkan daftar film
+    movies.forEach(movie => {
+      const card = document.createElement("div");
+      card.className = "movie-card";
+      card.innerHTML = `
+        <img src="${movie.thumb}" alt="${movie.title}">
+        <div class="movie-title">${movie.title}</div>
+      `;
+      card.addEventListener("click", () => {
+        player.src = movie.file;
+        modal.classList.add("active");
+        player.play();
+      });
+      container.appendChild(card);
+    });
+
+    // Tutup modal
+    function closeModal() {
+      modal.classList.remove("active");
+      player.pause();
+      player.src = "";
+    }
+
+    // Tutup modal saat klik luar video
+    modal.addEventListener("click", e => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
