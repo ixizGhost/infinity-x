@@ -71,15 +71,17 @@
 
   <script>
     function login() {
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
-      const error = document.getElementById("errorMsg");
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+  const error = document.getElementById("errorMsg");
 
-      if (user === "admin" && pass === "flix123") {
-        window.location.href = "home.html";
-      } else {
-        error.style.display = "block";
-      }
+  const storedUser = JSON.parse(localStorage.getItem("infinityUser"));
+
+  if (storedUser && user === storedUser.username && pass === storedUser.password) {
+    window.location.href = "home.html";
+  } else {
+    error.style.display = "block";
+  }
     }
   </script>
 </body>
