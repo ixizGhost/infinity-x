@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - InfinityFlix</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .register-box {
+      background: #1a1a1a;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00ccffaa;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .register-box h2 {
+      margin-bottom: 1.5rem;
+      color: #00ccff;
+    }
+    .register-box input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 6px;
+      background: #333;
+      color: white;
+    }
+    .register-box button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      background: #00ccff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .register-box button:hover {
+      background: #0099cc;
+    }
+    .message {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+    .message.error {
+      color: #ff6666;
+    }
+    .message.success {
+      color: #00ff99;
+    }
+    .login-link {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .login-link a {
+      color: #00ccff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-box">
+    <h2>Daftar Akun</h2>
+    <input type="text" id="regUsername" placeholder="Username" />
+    <input type="password" id="regPassword" placeholder="Password" />
+    <input type="password" id="regConfirm" placeholder="Ulangi Password" />
+    <button onclick="register()">Daftar</button>
+    <div class="message" id="regMsg"></div>
+    <div class="login-link">Sudah punya akun? <a href="index.html">Login di sini</a></div>
+  </div>
+
+  <script>
+    function register() {
+      const username = document.getElementById("regUsername").value.trim();
+      const password = document.getElementById("regPassword").value;
+      const confirm = document.getElementById("regConfirm").value;
+      const msg = document.getElementById("regMsg");
+
+      if (!username || !password || !confirm) {
+        msg.textContent = "Semua field harus diisi!";
+        msg.className = "message error";
+        return;
+      }
+
+      if (password !== confirm) {
+        msg.textContent = "Password tidak cocok!";
+        msg.className = "message error";
+        return;
+      }
+
+      // Simpan data ke localStorage
+      const userData = {
+        username: username,
+        password: password
+      };
+      localStorage.setItem("infinityUser", JSON.stringify(userData));
+
+      msg.textContent = "Registrasi berhasil! Mengarahkan ke login...";
+      msg.className = "message success";
+
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
