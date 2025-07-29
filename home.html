@@ -255,41 +255,36 @@
   const text = input.value.trim();
   if (!text) return;
 
+  // Tampilkan pesan user
   const userDiv = document.createElement("div");
   userDiv.className = "user-msg";
   userDiv.textContent = text;
   chatBody.appendChild(userDiv);
 
-  const botDiv = document.createElement("div");
-  botDiv.className = "bot-msg";
-  botDiv.textContent = "⏳ Sedang mencari jawaban...";
-  chatBody.appendChild(botDiv);
+  // Ambil database jawaban dari ai.json
+  try {
+    const res = await fetch("ai.json");
+    const data = await res.json();
+
+    // Cari jawaban
+    const found = data.find(item =>
+      text.toLowerCase().includes(item.q.toLowerCase())
+    );
+
+    const botDiv = document.createElement("div");
+    botDiv.className = "bot-msg";
+    botDiv.textContent = found ? found.a : "Maaf, saya belum paham maksudmu 😅";
+    chatBody.appendChild(botDiv);
+  } catch (err) {
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "bot-msg";
+    errorDiv.textContent = "⚠️ Gagal mengakses AI.";
+    chatBody.appendChild(errorDiv);
+  }
 
   input.value = "";
   chatBody.scrollTop = chatBody.scrollHeight;
-
-  try {
-    const res = await fetch("https://yanshs-cgi.github.io/cgi-all/cgi-ai-yansh.json");
-    const data = await res.json();
-
-    let jawaban = "Maaf, saya tidak menemukan jawaban 😅";
-    const lowerInput = text.toLowerCase();
-
-    for (let i = 0; i < data.length; i++) {
-      if (lowerInput.includes(data[i].q.toLowerCase())) {
-        jawaban = data[i].a;
-        break;
-      }
     }
-
-    botDiv.textContent = jawaban;
-  } catch (err) {
-    botDiv.textContent = "⚠️ Gagal mengakses AI.";
-    console.error(err);
-  }
-
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
   </script>
 </body>
 </html>
