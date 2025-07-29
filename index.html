@@ -57,6 +57,18 @@
       margin-top: 1rem;
       display: none;
     }
+    .register-link {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .register-link a {
+      color: #00ff99;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -67,21 +79,25 @@
     <input type="password" id="password" placeholder="Password" />
     <button onclick="login()">Masuk</button>
     <div class="error" id="errorMsg">Username atau password salah!</div>
+
+    <div class="register-link">
+      Belum punya akun? <a href="register.html">Daftar sekarang</a>
+    </div>
   </div>
 
   <script>
     function login() {
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
-  const error = document.getElementById("errorMsg");
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const error = document.getElementById("errorMsg");
 
-  const storedUser = JSON.parse(localStorage.getItem("infinityUser"));
+      const storedUser = JSON.parse(localStorage.getItem("infinityUser"));
 
-  if (storedUser && user === storedUser.username && pass === storedUser.password) {
-    window.location.href = "home.html";
-  } else {
-    error.style.display = "block";
-  }
+      if (storedUser && user === storedUser.username && pass === storedUser.password) {
+        window.location.href = "home.html";
+      } else {
+        error.style.display = "block";
+      }
     }
   </script>
 </body>
