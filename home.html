@@ -251,38 +251,50 @@
 
     
   async function sendMsg() {
-    const input = document.getElementById("userInput");
-    const chatBody = document.getElementById("chatBody");
-    const text = input.value.trim();
-    if (!text) return;
+  const input = document.getElementById("userInput");
+  const chatBody = document.getElementById("chatBody");
+  const text = input.value.trim();
+  if (!text) return;
 
-    // Tampilkan pesan user
-    const userDiv = document.createElement("div");
-    userDiv.className = "user-msg";
-    userDiv.textContent = text;
-    chatBody.appendChild(userDiv);
+  // Tampilkan pesan user
+  const userDiv = document.createElement("div");
+  userDiv.className = "user-msg";
+  userDiv.textContent = text;
+  chatBody.appendChild(userDiv);
 
-    try {
-      const res = await fetch("https://yanshs-cgi.github.io/cgi-all/cgi-ai-yansh.json");
-      const data = await res.json();
+  const botDiv = document.createElement("div");
+  botDiv.className = "bot-msg";
+  botDiv.textContent = "✍️ Mengetik...";
+  chatBody.appendChild(botDiv);
 
-      const found = data.find(item =>
-        text.toLowerCase().includes(item.q.toLowerCase())
-      );
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer sk-proj-t0878dgaomU9ZxwNyk2vT3BlbkFJZWrN1ZJWPp2E8mI63SaA
 
-      const botDiv = document.createElement("div");
-      botDiv.className = "bot-msg";
-      botDiv.textContent = found ? found.a : "Maaf, saya belum paham maksudmu 😅";
-      chatBody.appendChild(botDiv);
-    } catch (err) {
-      const botDiv = document.createElement("div");
-      botDiv.className = "bot-msg";
-      botDiv.textContent = "⚠️ Gagal mengakses AI.";
-      chatBody.appendChild(botDiv);
-    }
+          "
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "Kamu adalah AI asisten untuk pengguna InfinityFlix, bantu cari film dan hibur mereka." },
+          { role: "user", content: text }
+        ]
+      })
+    });
 
-    input.value = "";
-    chatBody.scrollTop = chatBody.scrollHeight;
+    const data = await res.json();
+    botDiv.textContent = data.choices?.[0]?.message?.content.trim() || "Maaf, tidak ada jawaban.";
+
+  } catch (err) {
+    botDiv.textContent = "⚠️ Gagal mengakses OpenAI.";
+  }
+
+  input.value = "";
+  chatBody.scrollTop = chatBody.scrollHeight;
+  }
   
   </script>
 </body>
