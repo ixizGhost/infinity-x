@@ -249,33 +249,47 @@
       document.getElementById("chatBox").classList.toggle("active");
     }
 
-    function sendMsg() {
-      const input = document.getElementById("userInput");
-      const chatBody = document.getElementById("chatBody");
-      const text = input.value.trim();
-      if (!text) return;
+    async function sendMsg() {
+  const input = document.getElementById("userInput");
+  const chatBody = document.getElementById("chatBody");
+  const text = input.value.trim();
+  if (!text) return;
 
-      const userDiv = document.createElement("div");
-      userDiv.className = "user-msg";
-      userDiv.textContent = text;
-      chatBody.appendChild(userDiv);
+  const userDiv = document.createElement("div");
+  userDiv.className = "user-msg";
+  userDiv.textContent = text;
+  chatBody.appendChild(userDiv);
 
-      // Fake AI response
-      const botDiv = document.createElement("div");
-      botDiv.className = "bot-msg";
+  const botDiv = document.createElement("div");
+  botDiv.className = "bot-msg";
+  botDiv.textContent = "⏳ Sedang mencari jawaban...";
+  chatBody.appendChild(botDiv);
 
-      if (text.toLowerCase().includes("action")) {
-        botDiv.textContent = "Coba tonton Avengers: Endgame 💥";
-      } else if (text.toLowerCase().includes("luar angkasa")) {
-        botDiv.textContent = "Interstellar cocok buat kamu 🚀";
-      } else {
-        botDiv.textContent = "Maaf, saya belum paham maksudmu 😅";
+  input.value = "";
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  try {
+    const res = await fetch("https://yanshs-cgi.github.io/cgi-all/cgi-ai-yansh.json");
+    const data = await res.json();
+
+    let jawaban = "Maaf, saya tidak menemukan jawaban 😅";
+    const lowerInput = text.toLowerCase();
+
+    for (let i = 0; i < data.length; i++) {
+      if (lowerInput.includes(data[i].q.toLowerCase())) {
+        jawaban = data[i].a;
+        break;
       }
-
-      chatBody.appendChild(botDiv);
-      input.value = "";
-      chatBody.scrollTop = chatBody.scrollHeight;
     }
+
+    botDiv.textContent = jawaban;
+  } catch (err) {
+    botDiv.textContent = "⚠️ Gagal mengakses AI.";
+    console.error(err);
+  }
+
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
   </script>
 </body>
 </html>
