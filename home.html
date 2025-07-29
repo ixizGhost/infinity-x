@@ -249,42 +249,41 @@
       document.getElementById("chatBox").classList.toggle("active");
     }
 
-    async function sendMsg() {
-  const input = document.getElementById("userInput");
-  const chatBody = document.getElementById("chatBody");
-  const text = input.value.trim();
-  if (!text) return;
+    
+  async function sendMsg() {
+    const input = document.getElementById("userInput");
+    const chatBody = document.getElementById("chatBody");
+    const text = input.value.trim();
+    if (!text) return;
 
-  // Tampilkan pesan user
-  const userDiv = document.createElement("div");
-  userDiv.className = "user-msg";
-  userDiv.textContent = text;
-  chatBody.appendChild(userDiv);
+    // Tampilkan pesan user
+    const userDiv = document.createElement("div");
+    userDiv.className = "user-msg";
+    userDiv.textContent = text;
+    chatBody.appendChild(userDiv);
 
-  // Ambil database jawaban dari ai.json
-  try {
-    const res = await fetch("ai.json");
-    const data = await res.json();
+    try {
+      const res = await fetch("https://yanshs-cgi.github.io/cgi-all/cgi-ai-yansh.json");
+      const data = await res.json();
 
-    // Cari jawaban
-    const found = data.find(item =>
-      text.toLowerCase().includes(item.q.toLowerCase())
-    );
+      const found = data.find(item =>
+        text.toLowerCase().includes(item.q.toLowerCase())
+      );
 
-    const botDiv = document.createElement("div");
-    botDiv.className = "bot-msg";
-    botDiv.textContent = found ? found.a : "Maaf, saya belum paham maksudmu 😅";
-    chatBody.appendChild(botDiv);
-  } catch (err) {
-    const errorDiv = document.createElement("div");
-    errorDiv.className = "bot-msg";
-    errorDiv.textContent = "⚠️ Gagal mengakses AI.";
-    chatBody.appendChild(errorDiv);
-  }
-
-  input.value = "";
-  chatBody.scrollTop = chatBody.scrollHeight;
+      const botDiv = document.createElement("div");
+      botDiv.className = "bot-msg";
+      botDiv.textContent = found ? found.a : "Maaf, saya belum paham maksudmu 😅";
+      chatBody.appendChild(botDiv);
+    } catch (err) {
+      const botDiv = document.createElement("div");
+      botDiv.className = "bot-msg";
+      botDiv.textContent = "⚠️ Gagal mengakses AI.";
+      chatBody.appendChild(botDiv);
     }
+
+    input.value = "";
+    chatBody.scrollTop = chatBody.scrollHeight;
+  
   </script>
 </body>
 </html>
