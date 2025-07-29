@@ -81,6 +81,101 @@
       cursor: pointer;
       font-weight: bold;
     }
+
+    /* Tombol Chat */
+    #aiChatBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: #00ff99;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 30px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ff99aa;
+      z-index: 10000;
+      transition: 0.3s;
+    }
+    #aiChatBtn:hover {
+      background: #00cc77;
+    }
+
+    /* Chat Box */
+    .chat-box {
+      position: fixed;
+      bottom: 80px;
+      left: 20px;
+      width: 300px;
+      max-height: 400px;
+      background: #1a1a1a;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #00ff99aa;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 10001;
+    }
+    .chat-box.active {
+      display: flex;
+    }
+    .chat-header {
+      background: #00ff99;
+      color: #000;
+      padding: 0.7rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-close {
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .chat-body {
+      flex: 1;
+      padding: 0.7rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .chat-body .bot-msg {
+      background: #00cc99;
+      color: #000;
+      padding: 0.6rem;
+      border-radius: 8px;
+      align-self: flex-start;
+      max-width: 80%;
+    }
+    .chat-body .user-msg {
+      background: #444;
+      color: #fff;
+      padding: 0.6rem;
+      border-radius: 8px;
+      align-self: flex-end;
+      max-width: 80%;
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #333;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 0.6rem;
+      border: none;
+      background: #111;
+      color: white;
+    }
+    .chat-input button {
+      background: #00ff99;
+      border: none;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -93,6 +188,24 @@
   <div class="modal" id="videoModal">
     <span class="close-btn" onclick="closeModal()">×</span>
     <video id="videoPlayer" controls></video>
+  </div>
+
+  <!-- Tombol Chat -->
+  <button id="aiChatBtn" onclick="toggleChat()">💬 AI Chat</button>
+
+  <!-- Chat Box -->
+  <div id="chatBox" class="chat-box">
+    <div class="chat-header">
+      AI InfinityFlix
+      <span onclick="toggleChat()" class="chat-close">×</span>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="bot-msg">Halo! Mau cari film apa hari ini? 🎥</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Tulis sesuatu..." onkeydown="if(event.key === 'Enter') sendMsg()" />
+      <button onclick="sendMsg()">Kirim</button>
+    </div>
   </div>
 
   <script>
@@ -131,6 +244,38 @@
     modal.addEventListener("click", e => {
       if (e.target === modal) closeModal();
     });
+
+    function toggleChat() {
+      document.getElementById("chatBox").classList.toggle("active");
+    }
+
+    function sendMsg() {
+      const input = document.getElementById("userInput");
+      const chatBody = document.getElementById("chatBody");
+      const text = input.value.trim();
+      if (!text) return;
+
+      const userDiv = document.createElement("div");
+      userDiv.className = "user-msg";
+      userDiv.textContent = text;
+      chatBody.appendChild(userDiv);
+
+      // Fake AI response
+      const botDiv = document.createElement("div");
+      botDiv.className = "bot-msg";
+
+      if (text.toLowerCase().includes("action")) {
+        botDiv.textContent = "Coba tonton Avengers: Endgame 💥";
+      } else if (text.toLowerCase().includes("luar angkasa")) {
+        botDiv.textContent = "Interstellar cocok buat kamu 🚀";
+      } else {
+        botDiv.textContent = "Maaf, saya belum paham maksudmu 😅";
+      }
+
+      chatBody.appendChild(botDiv);
+      input.value = "";
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
   </script>
 </body>
 </html>
